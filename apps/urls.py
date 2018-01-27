@@ -1,0 +1,4 @@
+
+
+def registAll():
+    pass
