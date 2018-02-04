@@ -1,6 +1,6 @@
 from django.db import models
 
-from models.userModel import GENDER_CHOICES
+from shared.choices.userModel import GENDER_CHOICES
 
 
 class Regist(models.Model):

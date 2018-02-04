@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Comment,TweetSign,TweetRelations,PersonRelations
+
+admin.site.register(Comment)
+admin.site.register(TweetSign)
+admin.site.register(TweetRelations)
+admin.site.register(PersonRelations)
