@@ -15,3 +15,5 @@ class RecommendTweetViewSet(viewsets.ModelViewSet):
     queryset = Tweet.objects.all().order_by('-create_time')
     serializer_class = TweetSerializer
     pagination_class = StandardResultSetPagination
+
+

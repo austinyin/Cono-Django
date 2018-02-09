@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.tweet',
     'apps.account',
     'apps.relation',
+    'apps.medium'
 ]
 
 MIDDLEWARE = [

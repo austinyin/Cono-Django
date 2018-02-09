@@ -30,4 +30,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/user/', include('apps.user.urls')),
     path('api/account/', include('apps.account.urls')),
+    path('api/upload/', include('apps.medium.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
