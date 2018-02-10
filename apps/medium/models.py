@@ -18,8 +18,7 @@ class TweetImage(models.Model):
         verbose_name_plural = '推文图片'
         db_table = 'tweet_image'
 
-    def __str__(self):
-        return self.image
+
 
 
 class TweetVideo(models.Model):

@@ -83,4 +83,5 @@ class TweetSign(models.Model):
         db_table = 'tweet_sign'
 
     def __str__(self):
-        return self.act_one
+        return self.act_one.username
+
