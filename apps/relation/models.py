@@ -5,7 +5,7 @@ from django.db import models
 
 from apps.tweet.models import Tweet
 from apps.user.models import User
-from shared.choices.commonModel import WHETHER_CHOICES
+from shared.choices.commonModel import WHETHER_CHOICES, BOOLEAN_CHOICES
 
 
 class PersonRelations(models.Model):
@@ -35,8 +35,8 @@ class TweetRelations(models.Model):
     update_time = models.DateTimeField(auto_now_add=True, verbose_name="修改时间")
     user = models.ForeignKey(User, verbose_name="收藏者", on_delete='SET_NULL')
     tweet = models.ForeignKey(Tweet, verbose_name="收藏文章", on_delete='SET_NULL')
-    is_like = models.IntegerField(default=0, choices=WHETHER_CHOICES, verbose_name="是否点赞")
-    is_collect = models.IntegerField(default=0, choices=WHETHER_CHOICES, verbose_name="是否收藏")
+    is_like = models.BooleanField(default=False, choices=BOOLEAN_CHOICES, verbose_name="是否点赞")
+    is_collect = models.BooleanField(default=False, choices=BOOLEAN_CHOICES, verbose_name="是否收藏")
 
     class Meta:
         verbose_name = '推文关系'

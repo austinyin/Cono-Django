@@ -1,5 +1,6 @@
 from django.db import InternalError
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 
 from apps.relation.models import Comment, TweetRelations
 from apps.relation.serializers import CommentSerializer, TweetRelationsSerializer
@@ -30,10 +31,12 @@ class TweetSerializer(serializers.ModelSerializer):
         return CommentSerializer(comments, many=True).data
 
     def get_relations(self, obj):
+        # user = self.context['request'].user
         user = User.objects.get(username='monkyin')
-        relations = TweetRelations.objects.filter(user=user, tweet=obj)
-        if relations:
-            return TweetRelationsSerializer(relations[0]).data
-        else:
-            return {}
+        if user is not None:
+            relations = TweetRelations.objects.get_or_create(user=user, tweet=obj)[0]
+            if relations is not None:
+                return TweetRelationsSerializer(relations).data
+            else:
+                return {}
 
