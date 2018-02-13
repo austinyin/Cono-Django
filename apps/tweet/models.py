@@ -28,6 +28,7 @@ class Tweet(models.Model):
         verbose_name = '推文'
         verbose_name_plural = '推文'
         db_table = 'tweet'
+        ordering = ('-update_time', '-create_time',)
 
     def __str__(self):
         return self.short_code

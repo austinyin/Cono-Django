@@ -14,8 +14,8 @@ class PersonRelations(models.Model):
     """
     act_one = models.ForeignKey(User, related_name='act_person', on_delete='SET_NULL', verbose_name="行为方")
     target_one = models.ForeignKey(User, related_name='target_person', on_delete='SET_NULL', verbose_name="目标")
-    is_block = models.IntegerField(default=0, choices=WHETHER_CHOICES, verbose_name="是否屏蔽")
-    is_friend = models.IntegerField(default=0, choices=WHETHER_CHOICES, verbose_name="是否关注")
+    is_follow = models.BooleanField(default=False, choices=BOOLEAN_CHOICES, verbose_name="是否关注")
+    is_block = models.BooleanField(default=False, choices=BOOLEAN_CHOICES, verbose_name="是否屏蔽")
 
     class Meta:
         verbose_name = '人物关系'
