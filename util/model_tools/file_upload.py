@@ -1,7 +1,10 @@
 # 上传路径
 
 # 公共公共路径
+import datetime
+
+
 def common_upload_path_handler(instance, filename):
-    return "{main}/{id}/{file}".format(main=instance._meta.verbose_name, id=str(instance.id),
-                                           file=filename)
+    now = datetime.datetime.now().strftime("%Y/%m/%d")
+    return "{main}/{time}/{file}".format(main=instance._meta.verbose_name,time=now,file=filename)
 

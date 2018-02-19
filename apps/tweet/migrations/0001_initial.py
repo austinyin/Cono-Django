@@ -73,6 +73,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='tweet',
             name='video',
-            field=models.ForeignKey(blank=True, null=True, on_delete='SET_NULL', to='tweet.TweetVideo', verbose_name='视频'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=models.CASCADE, to='tweet.TweetVideo', verbose_name='视频'),
         ),
     ]

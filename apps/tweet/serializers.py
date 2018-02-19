@@ -1,8 +1,9 @@
 from django.db import InternalError
+from django.forms import model_to_dict
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 
-from apps.relation.models import Comment, TweetRelations
+from apps.relation.models import Comment, TweetRelations, TweetSign
 from apps.relation.serializers import CommentSerializer, TweetRelationsSerializer
 
 from apps.tweet.models import Tweet
@@ -14,11 +15,13 @@ class TweetSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
     total_like = serializers.SerializerMethodField()
+    sign_list = serializers.SerializerMethodField()
     relations = serializers.SerializerMethodField()
 
     class Meta:
         model = Tweet
         fields = '__all__'
+        depth = 1
 
     def get_user(self, obj):
         # 这里将context进行了中转
@@ -30,7 +33,12 @@ class TweetSerializer(serializers.ModelSerializer):
 
     def get_comments(self, obj):
         comments = Comment.objects.filter(tweet=obj).order_by('-create_time')
-        return CommentSerializer(comments, many=True).data
+        hasNext = True if len(comments) > 10 else False
+        data = {
+            'hasNext': hasNext,
+            'data': CommentSerializer(comments[:10], many=True).data,
+        }
+        return data
 
     def get_relations(self, obj):
         user = self.context['request'].user
@@ -39,3 +47,8 @@ class TweetSerializer(serializers.ModelSerializer):
             if relations is not None:
                 return TweetRelationsSerializer(relations).data
         return []
+
+    def get_sign_list(self, obj):
+        sign_list = TweetSign.objects.filter(tweet=obj)
+        sign_target_list = [sign.target_one for sign in sign_list]
+        return [model_to_dict(item)['username'] for item in sign_target_list]

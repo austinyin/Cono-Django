@@ -32,4 +32,5 @@ urlpatterns = [
     path('api/account/', include('apps.account.urls')),
     path('api/upload/', include('apps.medium.urls')),
     path('api/relation/', include('apps.relation.urls')),
+    path('api/tweet/', include('apps.tweet.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

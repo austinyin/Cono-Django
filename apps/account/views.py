@@ -6,7 +6,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 
 from apps.user.models import User
-from apps.user.serializers import UserSerializer
+from apps.user.serializers import UserSerializer, SelfSerializer
 
 
 @csrf_exempt
@@ -22,18 +22,17 @@ def regist_view(request):
         except:
             return HttpResponseForbidden({'regist': False})
         if user is not None:
-            return JsonResponse({'regist': True, 'user': UserSerializer(user).data})
+            return JsonResponse({'regist': True, 'user':SelfSerializer(user,context={'request': request}).data})
 
 
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data['username'], data['password'])
         user = authenticate(username=data['username'], password=data['password'])
         if user is not None and user.is_active:
             login(request, user)
-            return JsonResponse({'login': True, 'user': UserSerializer(user).data})
+            return JsonResponse({'login': True, 'user': SelfSerializer(user,context={'request': request}).data})
 
         return HttpResponseForbidden({'login': False})
 
@@ -43,7 +42,7 @@ def login_check_view(request):
     if request.method == 'POST':
         user = request.user
         if user is not None and user.is_active:
-            return JsonResponse({'loginCheck': True, 'user': UserSerializer(user).data})
+            return JsonResponse({'loginCheck': True, 'user': SelfSerializer(user, context={'request': request}).data})
 
         return JsonResponse({'loginCheck': False, 'user': {}})
 
@@ -67,6 +66,6 @@ def change_password_view(request):
         if user.is_active and user.check_password(data['oldPassword']) and user.check_password(
                 data['newPassword']) == user.check_password(data['newPasswordRepeat']):
             user.set_password(user.check_password(data['newPassword']))
-            return JsonResponse({'changePassword': True, 'user': UserSerializer(user).data})
+            return JsonResponse({'changePassword': True, 'user': SelfSerializer(user,context={'request': request}).data})
         return HttpResponseForbidden({'changePassword': False})
 

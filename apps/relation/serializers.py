@@ -1,15 +1,23 @@
 from django.forms import model_to_dict
 from rest_framework import serializers
 
-from apps.relation.models import Comment, TweetRelations, PersonRelations
+
+from apps.relation.models import Comment, TweetRelations, PersonRelations, CommentSign
 
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
+    sign_list = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
         exclude = ('tweet',)
+
+    def get_sign_list(self, obj):
+        sign_list = CommentSign.objects.filter(comment=obj)
+        sign_target_list = [sign.target_one for sign in sign_list]
+        # 只需返回username即可
+        return [model_to_dict(item)['username'] for item in sign_target_list]
 
 
 class TweetRelationsSerializer(serializers.ModelSerializer):

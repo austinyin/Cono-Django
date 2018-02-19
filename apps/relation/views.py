@@ -4,12 +4,13 @@ from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.relation.models import Comment, TweetRelations, PersonRelations
+from apps.relation.models import Comment, TweetRelations, PersonRelations, TweetSign, CommentSign
+from apps.relation.serializers import CommentSerializer
 from apps.tweet.models import Tweet
 from apps.tweet.serializers import TweetSerializer
 from apps.user.models import User
 from apps.user.serializers import UserSimpleSerializer, UserSerializer
-from shared.constants.common import TweetRelationType, PersonUserRelationType
+from shared.constants.common import TweetRelationType, PersonUserRelationType, notices_set, NoticesType
 
 
 @csrf_exempt
@@ -18,20 +19,44 @@ def leave_comment_view(request):
     tweet添加评论
     """
     if request.method == 'POST':
-
         try:
             post_data = json.loads(request.body)
+            user = request.user
             tweet = Tweet.objects.get(id=post_data['tweetId'])
+            text = post_data['text']
             if tweet is not None:
+                # 评论对象创建
                 comment_obj = Comment.objects.create(
                     tweet=tweet,
-                    user=request.user,
-                    text=post_data['text']
+                    user=user,
+                    text=text
                 )
-                newTweet = Tweet.objects.get(id=post_data['tweetId'])
+
+                # notices添加
+                notice_list = [{'type': NoticesType['comments'], 'obj': comment_obj}]
+                notices_set(user, notice_list)
+
+                new_tweet = Tweet.objects.get(id=post_data['tweetId'])
+                # 评论标记对象创建
+                sign_target_list = post_data['signTargetList']
+                if sign_target_list:
+                    for target in sign_target_list:
+                        target_obj = User.objects.get(username=target)
+                        print('target_obj', target_obj)
+
+                        CommentSign.objects.create(
+                            act_one=user,
+                            target_one=target_obj,
+                            comment=comment_obj,
+                            text=text
+                        )
+
                 # 将request 传给 TweetSerializer 以便获取登陆用户
-                context = {'request': request}
-                return JsonResponse({'leaveComment': True, 'tweet': TweetSerializer(newTweet, context=context).data})
+                return JsonResponse({
+                    'leaveComment': True,
+                    'tweet': TweetSerializer(new_tweet, context={'request': request}).data,
+                    'comment': CommentSerializer(comment_obj, context={'request': request}).data
+                })
 
         except Exception as e:
             print(e)
@@ -49,13 +74,17 @@ def remove_comment_view(request):
 
         try:
             post_data = json.loads(request.body)
-            comment = Comment.objects.get(id=post_data['commentId'])
-            if comment is not None:
-                comment.delete()
+            comment_id = post_data['commentId']
+            comment_obj = Comment.objects.get(id=comment_id)
+            if comment_obj is not None:
+                comment_obj.delete()
                 new_tweet = Tweet.objects.get(id=post_data['tweetId'])
                 context = {'request': request}
-                return JsonResponse(
-                    {'removeComment': True, 'tweet': TweetSerializer(new_tweet, context=context).data})
+
+                return JsonResponse({'removeComment': True,
+                                     'tweet': TweetSerializer(new_tweet, context=context).data,
+                                     'commentId': comment_id
+                                     })
 
         except Exception as e:
             print(e)
@@ -82,7 +111,12 @@ def tweet_relation_set_view(request):
             if tweet_relations_obj is not None:
                 if post_data['type'] == TweetRelationType['like']:
                     tweet_relations_obj.is_like = bool(not tweet_relations_obj.is_like)
-                elif post_data['type'] == TweetRelationType['collect']:
+
+                    # notices添加
+                    notice_list = [{'type': NoticesType['TweetLikes'], 'obj': tweet_relations_obj}]
+                    notices_set(user, notice_list)
+
+                if post_data['type'] == TweetRelationType['collect']:
                     tweet_relations_obj.is_collect = bool(not tweet_relations_obj.is_collect)
 
                 tweet_relations_obj.save()
@@ -116,6 +150,10 @@ def person_relation_set_view(request):
             )[0]
             if post_data['type'] == PersonUserRelationType['follow']:
                 person_relations_obj.is_follow = bool(not person_relations_obj.is_follow)
+
+                # notices添加
+                notice_list = [{'type': NoticesType['personFollows'], 'obj': person_relations_obj}]
+                notices_set(user, notice_list)
             elif post_data['type'] == PersonUserRelationType['block']:
                 person_relations_obj.is_block = bool(not person_relations_obj.is_block)
 

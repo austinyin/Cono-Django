@@ -20,7 +20,6 @@ class TweetImage(models.Model):
 
 
 
-
 class TweetVideo(models.Model):
     """
     推文视频
@@ -34,9 +33,6 @@ class TweetVideo(models.Model):
         verbose_name = '推文视频'
         verbose_name_plural = '推文视频'
         db_table = 'tweet_video'
-
-    def __str__(self):
-        return self.describe
 
 
 class TweetFileTransfer(models.Model):
