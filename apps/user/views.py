@@ -1,3 +1,4 @@
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import redirect
 from rest_framework import viewsets, filters, generics
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -7,7 +8,7 @@ from rest_framework.views import APIView
 
 from apps.relation.models import PersonRelations
 from apps.tweet.models import Tweet
-from apps.tweet.serializers import TweetSerializer
+from apps.tweet.serializers import TweetSerializer, TweetSimpleSerializer
 from apps.user.models import User, Visitor
 from apps.user.serializers import UserSerializer, VisitorSerializer
 from shared.modelApply.paginators import StandardResultSetPagination
@@ -33,11 +34,15 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['get'])
     def snapshotList(self, request, pk=None):
+        """
+        now版本1 找出最近发表了文章的好友,
+        after 版本2 设计算法找出最近发表文章较多的好友。
+        """
         user = request.user
         if user is not None and user.is_active:
             snap_list = PersonRelations.objects.filter(act_one=user)
             clean_following_user_list = []
-            # 这里有点脏.
+            # 这里也可以改成for循环处理,这样缺乏可读性.
             following_user_list = [clean_following_user_list.append(obj.target_one)
                                    if Tweet.objects.filter(user=obj.target_one)
                                    else False for obj in snap_list]
@@ -65,6 +70,11 @@ class UserViewSet(viewsets.ModelViewSet):
             }
             return Response(relations_obj)
 
+    @detail_route(methods=['get'])
+    def avatar(self, request, pk=None):
+        avatar = self.get_object().avatar
+        return HttpResponse(avatar, content_type="image/png")
+
 
 class UserSearch(APIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication)
@@ -87,6 +97,17 @@ class UserRelationsSearch(APIView):
             return redirect('/api/user/{}/relations'.format(user.id))
 
 
+class UserSnapshots(APIView):
+
+    def get(self, request, user_name, format=None):
+        user = User.objects.get(username=user_name)
+        if user.is_active:
+            tweet_list = Tweet.objects.filter(user=user).order_by('-update_time')[:5]
+            return Response(TweetSimpleSerializer(tweet_list,many=True).data)
+        else:
+            return HttpResponseForbidden({'UserSnapshots': False})
+
+
 class UserTweetList(generics.ListAPIView):
     serializer_class = TweetSerializer
     lookup_url_kwarg = "user_name"
@@ -102,3 +123,5 @@ class UserTweetList(generics.ListAPIView):
 class VisitorViewSet(viewsets.ModelViewSet):
     queryset = Visitor.objects.all()
     serializer_class = VisitorSerializer
+
+

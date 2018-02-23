@@ -6,8 +6,7 @@ from django.db import models
 from shared.choices.commonModel import WHETHER_CHOICES
 
 from shared.choices.userModel import GENDER_CHOICES
-from util.model_tools.file_upload import common_upload_path_handler
-
+from util.model_tools import common_upload_path_handler
 
 class User(AbstractUser):
     """
@@ -43,8 +42,8 @@ class Visitor(models.Model):
     览客
     """
     ip = models.CharField(max_length=50, verbose_name="ip地址")
-    create_time = models.DateTimeField(auto_now=True, verbose_name="进入时间")
-    update_time = models.DateTimeField(auto_now_add=True, verbose_name="变更时间")
+    update_time = models.DateTimeField(auto_now=True, verbose_name="进入时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="变更时间")
 
     class Meta:
         verbose_name = '游客'

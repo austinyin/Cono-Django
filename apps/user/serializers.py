@@ -1,8 +1,13 @@
+import datetime
+
+from django.forms import model_to_dict
 from rest_framework import serializers
 
-from apps.relation.models import PersonRelations
+from apps.relation.models import PersonRelations, Notices
 from apps.user.models import User, Visitor
 from apps.relation.serializers import PersonRelationsSerializer
+from shared.constants.common import NoticesType
+
 
 class UserSerializer(serializers.ModelSerializer):
     relations = serializers.SerializerMethodField()
@@ -24,7 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class SelfSerializer(serializers.ModelSerializer):
     relations_obj = serializers.SerializerMethodField()
-    fresh_notices = serializers.SerializerMethodField()
+    notices = serializers.SerializerMethodField()
+
 
     class Meta:
         model = User
@@ -48,6 +54,25 @@ class SelfSerializer(serializers.ModelSerializer):
                 "blockList": UserSerializer(block_list, many=True).data
             }
             return relations_obj
+
+    def get_notices(self,obj):
+        user = self.context['request'].user
+        if user is not None and user.is_active:
+            notices_obj = Notices.objects.get_or_create(user=user)[0]
+            list = []
+            for key in NoticesType.keys():
+                a = getattr(notices_obj,key)
+                filter_list = a.filter(update_time__lt=datetime.datetime.now())
+                for obj in filter_list:
+                    list.append({
+                        'type': key,
+                        'obj': model_to_dict(obj)
+                    })
+            return list
+
+
+# def notice_filter(obj):
+
 
 
 class UserSimpleSerializer(serializers.ModelSerializer):

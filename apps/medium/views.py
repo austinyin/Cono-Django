@@ -58,7 +58,7 @@ def transfer_upload_view(request):
 
             if file_type == UploadMediaType['video']:
                 video_obj = TweetVideo.objects.create(
-                    video= file
+                    video=file
                 )
                 transfer_obj.video = video_obj
 
@@ -99,9 +99,12 @@ def pub_image_remove_view(request):
             })
 
 
+import subprocess
+
+
+
 @csrf_exempt
 def pub_commit_view(request):
-
     if request.method == 'POST':
         post_data = json.loads(request.body)
         short_code = request.COOKIES['shortCode']
@@ -115,20 +118,22 @@ def pub_commit_view(request):
         tweet = Tweet.objects.create(**tweet_data)
         try:
             if transfer_obj.type == UploadMediaType['image']:
-                for i in transfer_obj.images.all():
-                    tweet.images.add(i)
+                for image in transfer_obj.images.all():
+                    tweet.images.add(image)
                 tweet.type = UploadMediaType['image']
 
             if transfer_obj.type == UploadMediaType['video']:
                 tweet.video = transfer_obj.video
                 tweet.type = UploadMediaType['video']
-            tweet.save()
+
+            # 这里的save在model中进行了加工，会自动保存略缩图
+            tweet.save_with_thumbnail()
 
             # 增加tweetSign 对象
             signs = post_data['signTargetList']
             for target_username in signs:
                 target = User.objects.get(username=target_username)
-                print('target',target)
+                print('target', target)
                 if target is not None and target.is_active:
                     TweetSign.objects.create(
                         act_one=request.user,

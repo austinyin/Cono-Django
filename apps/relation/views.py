@@ -1,16 +1,15 @@
 import json
 
-from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.relation.models import Comment, TweetRelations, PersonRelations, TweetSign, CommentSign
+from apps.relation.models import Comment, TweetRelations, PersonRelations, CommentSign
 from apps.relation.serializers import CommentSerializer
 from apps.tweet.models import Tweet
 from apps.tweet.serializers import TweetSerializer
 from apps.user.models import User
-from apps.user.serializers import UserSimpleSerializer, UserSerializer
-from shared.constants.common import TweetRelationType, PersonUserRelationType, notices_set, NoticesType
+from apps.user.serializers import UserSerializer
+from shared.constants.common import TweetRelationType, PersonUserRelationType, NoticesType, notices_set
 
 
 @csrf_exempt
@@ -22,19 +21,19 @@ def leave_comment_view(request):
         try:
             post_data = json.loads(request.body)
             user = request.user
-            tweet = Tweet.objects.get(id=post_data['tweetId'])
+
+            tweet_obj = Tweet.objects.get(id=post_data['tweetId'])
             text = post_data['text']
-            if tweet is not None:
+            if tweet_obj is not None:
                 # 评论对象创建
                 comment_obj = Comment.objects.create(
-                    tweet=tweet,
+                    tweet=tweet_obj,
                     user=user,
                     text=text
                 )
 
-                # notices添加
-                notice_list = [{'type': NoticesType['comments'], 'obj': comment_obj}]
-                notices_set(user, notice_list)
+                # comment notice添加
+                notices_set(tweet_obj.user, NoticesType['comments'], comment_obj)
 
                 new_tweet = Tweet.objects.get(id=post_data['tweetId'])
                 # 评论标记对象创建
@@ -42,14 +41,16 @@ def leave_comment_view(request):
                 if sign_target_list:
                     for target in sign_target_list:
                         target_obj = User.objects.get(username=target)
-                        print('target_obj', target_obj)
 
-                        CommentSign.objects.create(
+                        comment_sign_obj = CommentSign.objects.create(
                             act_one=user,
                             target_one=target_obj,
                             comment=comment_obj,
                             text=text
                         )
+
+                        # commentSign notice添加
+                        notices_set(target_obj, NoticesType['commentSigns'], comment_sign_obj)
 
                 # 将request 传给 TweetSerializer 以便获取登陆用户
                 return JsonResponse({
@@ -112,9 +113,8 @@ def tweet_relation_set_view(request):
                 if post_data['type'] == TweetRelationType['like']:
                     tweet_relations_obj.is_like = bool(not tweet_relations_obj.is_like)
 
-                    # notices添加
-                    notice_list = [{'type': NoticesType['TweetLikes'], 'obj': tweet_relations_obj}]
-                    notices_set(user, notice_list)
+                    # like notice添加
+                    notices_set(tweet_obj.user, NoticesType['tweetLikes'], tweet_relations_obj)
 
                 if post_data['type'] == TweetRelationType['collect']:
                     tweet_relations_obj.is_collect = bool(not tweet_relations_obj.is_collect)
@@ -151,9 +151,9 @@ def person_relation_set_view(request):
             if post_data['type'] == PersonUserRelationType['follow']:
                 person_relations_obj.is_follow = bool(not person_relations_obj.is_follow)
 
-                # notices添加
-                notice_list = [{'type': NoticesType['personFollows'], 'obj': person_relations_obj}]
-                notices_set(user, notice_list)
+                # follow notice添加
+                notices_set(target, NoticesType['personFollows'], person_relations_obj)
+
             elif post_data['type'] == PersonUserRelationType['block']:
                 person_relations_obj.is_block = bool(not person_relations_obj.is_block)
 

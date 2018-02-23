@@ -1,7 +1,6 @@
 from django.forms import model_to_dict
 from rest_framework import serializers
 
-
 from apps.relation.models import Comment, TweetRelations, PersonRelations, CommentSign
 
 
@@ -30,3 +29,20 @@ class PersonRelationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PersonRelations
         fields = ['is_follow', 'is_block']
+
+
+# class RelationCommentSerializer(serializers.ModelSerializer):
+#     user = serializers.StringRelatedField()
+#     sign_list = serializers.SerializerMethodField()
+#
+#     class Meta:
+#         model = Comment
+#         fields = '__all__'
+#
+#
+# class RelationCommentSignSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CommentSign
+#         fields = '__all__'
+#         depth = 1
+

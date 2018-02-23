@@ -16,17 +16,27 @@ PersonUserRelationType = {
 }
 
 NoticesType = {
-    'comments': 'comments',
-    'tweetSigns': 'tweetSigns',
-    'tweetLikes': 'tweetLikes',
-    'personFollows': 'personFollows',
+    'comments': "comments",
+    'commentSigns': "commentSigns",
+    'tweetSigns': "tweetSigns",
+    'tweetLikes': "tweetLikes",
+    'personFollows': "personFollows",
 }
 
-def notices_set(user,list):
-    try:
-        for item in list:
-            notices_obj = Notices.objects.get_or_create(user=user)[0]
-            notices_obj[NoticesType[item.get('type')]].add(item.obj)
+# NoticeKeyToSerializer = {
+#     'comments': CommentSerializer,
+#     'commentSigns': CommentSignSerializer,
+#     'tweetSigns': "tweetSigns",
+#     'tweetLikes': "tweetLikes",
+#     'personFollows': "personFollows",
+# }
 
+IMAGE_THUMBNAIL_SIZE = (300, 300)
+IMAGE_THUMBNAIL_TYPE = 'jpg'
+
+def notices_set(user,type, item):
+    try:
+        notices_obj = Notices.objects.get_or_create(user=user)[0]
+        getattr(notices_obj, NoticesType[type]).add(item)
     except Exception as e:
         print(e)

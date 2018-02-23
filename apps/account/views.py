@@ -6,7 +6,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 
 from apps.user.models import User
-from apps.user.serializers import UserSerializer, SelfSerializer
+from apps.user.serializers import SelfSerializer
 
 
 @csrf_exempt
@@ -22,7 +22,7 @@ def regist_view(request):
         except:
             return HttpResponseForbidden({'regist': False})
         if user is not None:
-            return JsonResponse({'regist': True, 'user':SelfSerializer(user,context={'request': request}).data})
+            return JsonResponse({'regist': True, 'user': SelfSerializer(user, context={'request': request}).data})
 
 
 @csrf_exempt
@@ -32,7 +32,7 @@ def login_view(request):
         user = authenticate(username=data['username'], password=data['password'])
         if user is not None and user.is_active:
             login(request, user)
-            return JsonResponse({'login': True, 'user': SelfSerializer(user,context={'request': request}).data})
+            return JsonResponse({'login': True, 'user': SelfSerializer(user, context={'request': request}).data})
 
         return HttpResponseForbidden({'login': False})
 
@@ -66,6 +66,6 @@ def change_password_view(request):
         if user.is_active and user.check_password(data['oldPassword']) and user.check_password(
                 data['newPassword']) == user.check_password(data['newPasswordRepeat']):
             user.set_password(user.check_password(data['newPassword']))
-            return JsonResponse({'changePassword': True, 'user': SelfSerializer(user,context={'request': request}).data})
+            return JsonResponse(
+                {'changePassword': True, 'user': SelfSerializer(user, context={'request': request}).data})
         return HttpResponseForbidden({'changePassword': False})
-

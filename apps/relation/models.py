@@ -3,9 +3,9 @@
 """
 from django.db import models
 
-from apps.tweet.models import Tweet
 from apps.user.models import User
-from shared.choices.commonModel import WHETHER_CHOICES, BOOLEAN_CHOICES
+
+from shared.choices.commonModel import BOOLEAN_CHOICES
 
 
 class PersonRelations(models.Model):
@@ -16,6 +16,8 @@ class PersonRelations(models.Model):
     target_one = models.ForeignKey(User, related_name='target_person', on_delete=models.CASCADE, verbose_name="目标")
     is_follow = models.BooleanField(default=False, choices=BOOLEAN_CHOICES, verbose_name="是否关注")
     is_block = models.BooleanField(default=False, choices=BOOLEAN_CHOICES, verbose_name="是否屏蔽")
+    update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = '人物关系'
@@ -31,12 +33,12 @@ class TweetRelations(models.Model):
     """
     推文关系
     """
-    create_time = models.DateTimeField(auto_now=True, verbose_name="创建时间")
-    update_time = models.DateTimeField(auto_now_add=True, verbose_name="修改时间")
     user = models.ForeignKey(User, verbose_name="收藏者", on_delete=models.CASCADE)
-    tweet = models.ForeignKey(Tweet, verbose_name="收藏文章", on_delete=models.CASCADE)
+    tweet = models.ForeignKey('tweet.Tweet', verbose_name="收藏文章", on_delete=models.CASCADE)
     is_like = models.BooleanField(default=False, choices=BOOLEAN_CHOICES, verbose_name="是否点赞")
     is_collect = models.BooleanField(default=False, choices=BOOLEAN_CHOICES, verbose_name="是否收藏")
+    update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = '推文关系'
@@ -53,10 +55,10 @@ class Comment(models.Model):
     推文评论
     """
     text = models.CharField(max_length=1000)
-    create_time = models.DateTimeField(auto_now=True, verbose_name="创建时间")
-    update_time = models.DateTimeField(auto_now_add=True, verbose_name="修改时间")
     user = models.ForeignKey(User, verbose_name="评论者", on_delete=models.CASCADE)
-    tweet = models.ForeignKey(Tweet, verbose_name="被评论文章", on_delete=models.CASCADE)
+    tweet = models.ForeignKey('tweet.Tweet', verbose_name="被评论文章", on_delete=models.CASCADE)
+    update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = '推文评论'
@@ -71,11 +73,14 @@ class TweetSign(models.Model):
     """
     推文@
     """
-    act_one = models.ForeignKey(User, related_name='tweet_sign_act_person', on_delete=models.CASCADE, verbose_name="行为方")
-    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, verbose_name="文章")
-    target_one = models.ForeignKey(User, related_name='tweet_sign_target_person', on_delete=models.CASCADE, verbose_name="目标")
+    act_one = models.ForeignKey(User, related_name='tweet_sign_act_person', on_delete=models.CASCADE,
+                                verbose_name="行为方")
+    tweet = models.ForeignKey('tweet.Tweet', on_delete=models.CASCADE, verbose_name="文章")
+    target_one = models.ForeignKey(User, related_name='tweet_sign_target_person', on_delete=models.CASCADE,
+                                   verbose_name="目标")
     text = models.CharField(max_length=1000, null=True, blank=True, verbose_name="文字")
-    create_time = models.DateTimeField(auto_now=True, verbose_name="创建时间")
+    update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = '推文标记'
@@ -90,11 +95,14 @@ class CommentSign(models.Model):
     """
     推文@
     """
-    act_one = models.ForeignKey(User, related_name='comment_sign_act_person', on_delete=models.CASCADE, verbose_name="行为方")
+    act_one = models.ForeignKey(User, related_name='comment_sign_act_person', on_delete=models.CASCADE,
+                                verbose_name="行为方")
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, verbose_name="评论")
-    target_one = models.ForeignKey(User, related_name='comment_sign_target_person', on_delete=models.CASCADE, verbose_name="目标")
+    target_one = models.ForeignKey(User, related_name='comment_sign_target_person', on_delete=models.CASCADE,
+                                   verbose_name="目标")
     text = models.CharField(max_length=1000, null=True, blank=True, verbose_name="文字")
-    create_time = models.DateTimeField(auto_now=True, verbose_name="创建时间")
+    update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = '评论标记'
@@ -106,14 +114,33 @@ class CommentSign(models.Model):
 
 
 class Notices(models.Model):
-    user = models.ForeignKey(User,verbose_name="用户", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name="用户", on_delete=models.CASCADE)
     comments = models.ManyToManyField(Comment, blank=True, verbose_name="评论")
     commentSigns = models.ManyToManyField(CommentSign, blank=True, verbose_name="评论标记")
     tweetSigns = models.ManyToManyField(TweetSign, blank=True, verbose_name="tweet标记")
-    tweetLikes = models.ManyToManyField(TweetRelations, blank=True, verbose_name="tweet关系")
-    personFollows = models.ManyToManyField(PersonRelations, blank=True, verbose_name="person关系")
+    tweetLikes = models.ManyToManyField(TweetRelations, blank=True, verbose_name="tweet点赞")
+    personFollows = models.ManyToManyField(PersonRelations, blank=True, verbose_name="person follow")
+    period = models.IntegerField(default=7, verbose_name="周期(day)")
+    update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = '通知'
         verbose_name_plural = '通知'
         db_table = 'notice'
+
+# class Notice(models.Model):
+#     user = models.ForeignKey(User,verbose_name="用户", on_delete=models.CASCADE)
+#     type = models.IntegerField(choices=NOTICE_CHOICES,verbose_name="类型")
+#     comment = models.ForeignKey(Comment, blank=True, verbose_name="评论",on_delete=models.CASCADE)
+#     comment_sign = models.ForeignKey(CommentSign, blank=True, verbose_name="评论标记",on_delete=models.CASCADE)
+#     tweet_sign = models.ForeignKey(TweetSign, blank=True, verbose_name="推文标记",on_delete=models.CASCADE)
+#     tweet_like = models.ForeignKey(TweetRelations, blank=True, verbose_name="推文点赞",on_delete=models.CASCADE)
+#     person_follow = models.ForeignKey(PersonRelations, blank=True, verbose_name="人际追随",on_delete=models.CASCADE)
+#     update_time = models.DateTimeField(auto_now=True, verbose_name="修改时间")
+#     create_time = models.DateTimeField(auto_now_add=True, verbose_name="变更时间")
+#
+#     class Meta:
+#         verbose_name = '通知'
+#         verbose_name_plural = '通知'
+#         db_table = 'notice'

@@ -11,6 +11,13 @@ from apps.user.models import User
 from apps.user.serializers import UserSimpleSerializer
 
 
+class TweetSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tweet
+        fields = ['images', 'video', 'type','id']
+        depth = 1
+
+
 class TweetSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()

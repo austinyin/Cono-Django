@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
-from django.http import JsonResponse, HttpResponseServerError
+from django.http import JsonResponse, HttpResponseServerError, HttpResponse
 from rest_framework import viewsets
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -15,6 +16,11 @@ class TweetViewSet(viewsets.ModelViewSet):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
     pagination_class = StandardResultSetPagination
+
+    @detail_route(methods=['get'])
+    def thumbnail(self, request, pk=None):
+        thumbnail_image = self.get_object().images.first().image
+        return HttpResponse(thumbnail_image, content_type="image/png")
 
 
 class RecommendTweetViewSet(viewsets.ModelViewSet):
