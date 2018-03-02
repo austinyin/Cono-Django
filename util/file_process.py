@@ -42,3 +42,6 @@ def image_scale(size, file_path, save_path,afterRemove=False):
         os.remove(infile)
 
     return save_path
+
+
+

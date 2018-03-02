@@ -4,7 +4,8 @@ from Cono.urls import router
 from . import views
 
 urlpatterns = [
-    re_path(r'^username/(?P<user_name>.+?)/tweets', views.UserTweetList.as_view()),
+    re_path(r'^username/(?P<user_name>.+?)/tweets$', views.UserTweetList.as_view()),
+    re_path(r'^username/(?P<user_name>.+?)/tweets/collect$', views.UserCollectTweetList.as_view()),
     re_path(r'username/(?P<user_name>[0-9a-zA-Z]+)$', views.UserSearch.as_view()),
     re_path(r'username/(?P<user_name>[0-9a-zA-Z]+)/relations$', views.UserRelationsSearch.as_view()),
     re_path(r'username/(?P<user_name>[0-9a-zA-Z]+)/snapshots$', views.UserSnapshots.as_view()),

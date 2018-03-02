@@ -1,5 +1,4 @@
-import datetime
-
+from django.utils import timezone
 from django.forms import model_to_dict
 from rest_framework import serializers
 
@@ -62,7 +61,7 @@ class SelfSerializer(serializers.ModelSerializer):
             list = []
             for key in NoticesType.keys():
                 a = getattr(notices_obj,key)
-                filter_list = a.filter(update_time__lt=datetime.datetime.now())
+                filter_list = a.filter(update_time__lt=timezone.datetime.now())
                 for obj in filter_list:
                     list.append({
                         'type': key,

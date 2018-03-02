@@ -6,7 +6,7 @@ from rest_framework.decorators import list_route, detail_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.relation.models import PersonRelations
+from apps.relation.models import PersonRelations, TweetRelations
 from apps.tweet.models import Tweet
 from apps.tweet.serializers import TweetSerializer, TweetSimpleSerializer
 from apps.user.models import User, Visitor
@@ -43,11 +43,15 @@ class UserViewSet(viewsets.ModelViewSet):
             snap_list = PersonRelations.objects.filter(act_one=user)
             clean_following_user_list = []
             # 这里也可以改成for循环处理,这样缺乏可读性.
-            following_user_list = [clean_following_user_list.append(obj.target_one)
-                                   if Tweet.objects.filter(user=obj.target_one)
-                                   else False for obj in snap_list]
-            sorted_following__user_list = sorted(clean_following_user_list,
-                                                 key=lambda obj: Tweet.objects.filter(user=obj)[0].create_time)
+            following_user_list = [
+                clean_following_user_list.append(obj.target_one)
+                if Tweet.objects.filter(user=obj.target_one)
+                else False for obj in snap_list
+            ]
+            sorted_following__user_list = sorted(
+                clean_following_user_list,
+                key=lambda obj: Tweet.objects.filter(user=obj)[0].create_time
+            )
             return Response(UserSerializer(sorted_following__user_list[:5], many=True).data)
 
     @detail_route(methods=['get'])
@@ -117,6 +121,19 @@ class UserTweetList(generics.ListAPIView):
         user_name = self.kwargs.get(self.lookup_url_kwarg)
         user = User.objects.get(username=user_name)
         tweets = Tweet.objects.filter(user=user)
+        return tweets
+
+
+class UserCollectTweetList(generics.ListAPIView):
+    serializer_class = TweetSerializer
+    lookup_url_kwarg = "user_name"
+    pagination_class = StandardResultSetPagination
+
+    def get_queryset(self):
+        user_name = self.kwargs.get(self.lookup_url_kwarg)
+        user = User.objects.get(username=user_name)
+        tweetRelations_objects = TweetRelations.objects.filter(user=user,is_collect=True)
+        tweets = [obj.tweet for obj in tweetRelations_objects]
         return tweets
 
 
