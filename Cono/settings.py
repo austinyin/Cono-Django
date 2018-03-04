@@ -112,8 +112,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    )
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
 }
+
 
 # 权限用户
 AUTH_USER_MODEL = "user.User"
@@ -137,6 +142,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     '*'
 )
+
+CSRF_COOKIE_NAME = "csrftoken"
+
 CORS_ALLOW_METHODS = (
     'DELETE',
     'GET',
@@ -156,7 +164,7 @@ CORS_ALLOW_HEADERS = (
     'dnt',
     'origin',
     'user-agent',
-    'x-csrftoken',
+    'X_CSRFToken ',
     'x-requested-with',
     'Pragma',
 )

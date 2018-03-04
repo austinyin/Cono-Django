@@ -94,7 +94,6 @@ class UserSearch(APIView):
 
 
 class UserRelationsSearch(APIView):
-
     def get(self, request, user_name, format=None):
         user = User.objects.get(username=user_name)
         if user.is_active:
