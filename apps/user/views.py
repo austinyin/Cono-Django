@@ -10,7 +10,7 @@ from apps.relation.models import PersonRelations, TweetRelations
 from apps.tweet.models import Tweet
 from apps.tweet.serializers import TweetSerializer, TweetSimpleSerializer
 from apps.user.models import User, Visitor
-from apps.user.serializers import UserSerializer, VisitorSerializer
+from apps.user.serializers import UserSerializer, VisitorSerializer, UserCenterUserSerializer
 from shared.modelApply.paginators import StandardResultSetPagination
 
 
@@ -86,6 +86,7 @@ class UserSearch(APIView):
     def get(self, request, user_name, format=None):
         user = User.objects.get(username=user_name)
         data = UserSerializer(user, context={'request': request}).data
+        print('data',data)
         # 判断是否是查询的自己，并加上相应字段。
         if user == request.user:
             data.setdefault('isSelf', True)

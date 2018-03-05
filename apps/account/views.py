@@ -31,12 +31,18 @@ def regist_view(request):
 def login_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        print(data['username'],data['password'])
+        print(data['username'],data['password'])
+        print(data['username'],data['password'])
         user = authenticate(username=data['username'], password=data['password'])
+        print('user',user)
+        print('user',user)
+        print('user',user)
         if user is not None and user.is_active:
             login(request, user)
             return JsonResponse({'login': True, 'user': SelfSerializer(user, context={'request': request}).data})
 
-        return HttpResponseForbidden({'login': False})
+        return HttpResponseBadRequest({'login': False})
 
 
 @csrf_exempt
