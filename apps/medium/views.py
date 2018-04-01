@@ -133,7 +133,6 @@ def pub_commit_view(request):
             signs = post_data['signTargetList']
             for target_username in signs:
                 target = User.objects.get(username=target_username)
-                print('target', target)
                 if target is not None and target.is_active:
                     TweetSign.objects.create(
                         act_one=request.user,

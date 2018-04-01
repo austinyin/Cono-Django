@@ -31,13 +31,7 @@ def regist_view(request):
 def login_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data['username'],data['password'])
-        print(data['username'],data['password'])
-        print(data['username'],data['password'])
         user = authenticate(username=data['username'], password=data['password'])
-        print('user',user)
-        print('user',user)
-        print('user',user)
         if user is not None and user.is_active:
             login(request, user)
             return JsonResponse({'login': True, 'user': SelfSerializer(user, context={'request': request}).data})
@@ -83,7 +77,6 @@ def logout_view(request):
 @csrf_exempt
 def self_change_view(request):
     if request.method == 'POST':
-        print('request.META',request.META)
         user = request.user
         data = json.loads(request.body)
         if user.is_active:
@@ -98,9 +91,7 @@ def self_change_view(request):
 @csrf_exempt
 def change_avatar_view(request):
     if request.method == 'POST':
-        print(request.COOKIES)
         user = request.user
-        print('request.FILES',request.FILES)
         file = request.FILES['file']
         if user.is_active:
             user.avatar = file
@@ -119,7 +110,6 @@ def change_password_view(request):
                 data['newPassword']['value'],
                 data['newPasswordRepeat']['value']
             ]
-            print(old_password,new_password,new_password_reapeat)
             if user.is_active and user.check_password(old_password) and new_password==new_password_reapeat:
                 user.set_password(user.check_password(data['newPassword']))
                 return JsonResponse(

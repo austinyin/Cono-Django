@@ -21,6 +21,7 @@ NoticesType = {
     'tweetSigns': "tweetSigns",
     'tweetLikes': "tweetLikes",
     'personFollows': "personFollows",
+    'tweetCollects': "tweetCollects",
 }
 
 # NoticeKeyToSerializer = {

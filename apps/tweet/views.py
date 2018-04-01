@@ -35,7 +35,6 @@ class TweetCommentsView(APIView):
             tweet = Tweet.objects.get(id=int(id))
             comment_list = Comment.objects.filter(tweet=tweet)
             page = request.GET.get('page')
-            print(page)
             paginator = Paginator(comment_list, 10)
             comments = paginator.page(page)
             data = {

@@ -8,7 +8,6 @@ from Cono.settings import BASE_DIR
 
 def ffmpeg_video_screenshot(video_path, save_path):
     ffmpeg_path = os.path.join(BASE_DIR, 'extra_apps/ffmpeg/ffmpeg.exe')
-    print('ffmpeg_path', ffmpeg_path)
     img_crop_cmd = '{} -ss 00:00:02 -i {} -frames:v 1 -s 300x300 {}'.format(ffmpeg_path, video_path, save_path)
     img_crop_pipe = subprocess.Popen(img_crop_cmd, shell=True)
     img_crop_pipe.wait()

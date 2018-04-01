@@ -10,7 +10,7 @@ from apps.relation.models import PersonRelations, TweetRelations
 from apps.tweet.models import Tweet
 from apps.tweet.serializers import TweetSerializer, TweetSimpleSerializer
 from apps.user.models import User, Visitor
-from apps.user.serializers import UserSerializer, VisitorSerializer, UserCenterUserSerializer
+from apps.user.serializers import UserSerializer, VisitorSerializer, SelfSerializer, SearchUserSerializer
 from shared.modelApply.paginators import StandardResultSetPagination
 
 
@@ -85,8 +85,7 @@ class UserSearch(APIView):
 
     def get(self, request, user_name, format=None):
         user = User.objects.get(username=user_name)
-        data = UserSerializer(user, context={'request': request}).data
-        print('data',data)
+        data = SearchUserSerializer(user, context={'request': request}).data
         # 判断是否是查询的自己，并加上相应字段。
         if user == request.user:
             data.setdefault('isSelf', True)
@@ -102,12 +101,11 @@ class UserRelationsSearch(APIView):
 
 
 class UserSnapshots(APIView):
-
     def get(self, request, user_name, format=None):
         user = User.objects.get(username=user_name)
         if user.is_active:
             tweet_list = Tweet.objects.filter(user=user).order_by('-update_time')[:5]
-            return Response(TweetSimpleSerializer(tweet_list,many=True).data)
+            return Response(TweetSimpleSerializer(tweet_list, many=True).data)
         else:
             return HttpResponseForbidden({'UserSnapshots': False})
 
@@ -132,7 +130,7 @@ class UserCollectTweetList(generics.ListAPIView):
     def get_queryset(self):
         user_name = self.kwargs.get(self.lookup_url_kwarg)
         user = User.objects.get(username=user_name)
-        tweetRelations_objects = TweetRelations.objects.filter(user=user,is_collect=True)
+        tweetRelations_objects = TweetRelations.objects.filter(user=user, is_collect=True)
         tweets = [obj.tweet for obj in tweetRelations_objects]
         return tweets
 
@@ -140,5 +138,3 @@ class UserCollectTweetList(generics.ListAPIView):
 class VisitorViewSet(viewsets.ModelViewSet):
     queryset = Visitor.objects.all()
     serializer_class = VisitorSerializer
-
-

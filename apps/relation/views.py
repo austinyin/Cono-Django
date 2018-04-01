@@ -118,6 +118,8 @@ def tweet_relation_set_view(request):
 
                 if post_data['type'] == TweetRelationType['collect']:
                     tweet_relations_obj.is_collect = bool(not tweet_relations_obj.is_collect)
+                    # collect notice添加
+                    notices_set(tweet_obj.user, NoticesType['tweetCollects'], tweet_relations_obj)
 
                 tweet_relations_obj.save()
                 new_tweet = Tweet.objects.get(id=post_data['tweetId'])

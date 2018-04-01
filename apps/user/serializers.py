@@ -8,11 +8,6 @@ from apps.user.models import User, Visitor
 from apps.relation.serializers import PersonRelationsSerializer
 from shared.constants.common import NoticesType
 
-UserSerializerTypes = {
-    "common": 1,
-    "selfCenter": 2,
-}
-
 
 class UserSerializerTweetTotalMixin(serializers.ModelSerializer):
     tweet_total = serializers.SerializerMethodField()
@@ -21,21 +16,11 @@ class UserSerializerTweetTotalMixin(serializers.ModelSerializer):
         user = self.context['request'].user
         if user is not None and user.is_active:
             tweet_list = Tweet.objects.filter(user=user)
-            print('tweet_list', tweet_list)
             return len(tweet_list)
 
 
 class UserSerializerRelationObjMixin(serializers.ModelSerializer):
-    tweet_total = serializers.SerializerMethodField()
     relations_obj = serializers.SerializerMethodField()
-
-    def get_tweet_total(self, obj):
-        user = self.context['request'].user
-        if user is not None and user.is_active:
-            tweet_list = Tweet.objects.filter(user=user)
-            print('tweet_list', tweet_list)
-            return len(tweet_list)
-
 
     def get_relations_obj(self, obj):
         user = self.context['request'].user
@@ -67,7 +52,7 @@ class UserSerializerRelationObjMixin(serializers.ModelSerializer):
             return relations_obj
 
 
-class UserSerializer(UserSerializerTweetTotalMixin):
+class UserSerializer(serializers.ModelSerializer):
     relations = serializers.SerializerMethodField()
 
     class Meta:
@@ -85,26 +70,13 @@ class UserSerializer(UserSerializerTweetTotalMixin):
             return {}
 
 
-class UserCenterUserSerializer(UserSerializerRelationObjMixin):
-    relations = serializers.SerializerMethodField()
-
+class SearchUserSerializer(UserSerializerTweetTotalMixin, UserSerializerRelationObjMixin):
     class Meta:
         model = User
         exclude = ('password', 'last_login', 'is_superuser', 'date_joined', 'groups', 'user_permissions')
 
-    def get_relations(self, obj):
-        try:
-            user = self.context['request'].user
-            if user is not None:
-                relations = PersonRelations.objects.get_or_create(act_one=user, target_one=obj)[0]
-                return PersonRelationsSerializer(relations).data
-        except Exception as e:
-            print(e)
-            return {}
 
-
-
-class SelfSerializer(UserSerializerRelationObjMixin):
+class SelfSerializer(UserSerializerTweetTotalMixin, UserSerializerRelationObjMixin):
     notices = serializers.SerializerMethodField()
 
     class Meta:
@@ -112,19 +84,41 @@ class SelfSerializer(UserSerializerRelationObjMixin):
         exclude = ('password', 'last_login', 'is_superuser', 'date_joined', 'groups', 'user_permissions')
 
     def get_notices(self, obj):
-        user = self.context['request'].user
-        if user is not None and user.is_active:
-            notices_obj = Notices.objects.get_or_create(user=user)[0]
-            list = []
-            for key in NoticesType.keys():
-                a = getattr(notices_obj, key)
-                filter_list = a.filter(update_time__lt=timezone.datetime.now())
-                for obj in filter_list:
-                    list.append({
-                        'type': key,
-                        'obj': model_to_dict(obj)
-                    })
-            return list
+        request = self.context['request']
+        user = request.user
+        if user is None or not user.is_active:
+            return
+
+        notices_obj = Notices.objects.get_or_create(user=user)[0]
+
+        ret_list = []
+        # 为UserModel的Key
+        seria_key_list = ['user', 'act_one', 'target_one']
+
+        # first for: 获得筛选后的 notices_obj中manytomany对象列表
+        # second for: model_to_dict() from obj to obj_dict
+        # third for: 将包含User对象的key的value设置为UserSerializer(User).data
+        # return { 'type': key,'obj': obj_dict}
+        for key in NoticesType.keys():
+            relation_child_list = getattr(notices_obj, key)
+            filter_list = relation_child_list.filter(update_time__lt=timezone.datetime.now()).reverse()
+
+            for obj in filter_list:
+                obj_dict = model_to_dict(obj)
+                obj_dict['update_time'] = obj.update_time  # model_to_dict 会排除auto_now=True等字段
+
+                # 遍历将dict中的value为user id的value设置为Serializer后的user data
+                for seria_key in seria_key_list:
+                    if seria_key in obj_dict:
+                        seri_user = User.objects.get(id=obj_dict[seria_key])
+                        obj_dict[seria_key] = UserSerializer(seri_user, context={'request': request}).data
+
+                ret_list.append({
+                    'type': key,
+                    'obj': obj_dict
+                })
+
+        return ret_list
 
 
 # def notice_filter(obj):
