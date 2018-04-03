@@ -3,6 +3,7 @@
 """
 import os
 
+import re
 from django.db import models
 
 from Cono.settings import BASE_DIR
@@ -54,14 +55,16 @@ class Tweet(models.Model):
     def image_obj_scale_handle(self, image_obj):
         img_path, thumb_save_path = self.path_cac(image_obj.image)
         scaled_image_path = image_scale(IMAGE_THUMBNAIL_SIZE, img_path,thumb_save_path)
-        return scaled_image_path
+        return f"/media{str.split(scaled_image_path)[1]}"
 
     def video_capture_and_scale_handle(self, video_obj):
         video_path, thumb_save_path = self.path_cac(video_obj.video)
         scaled_image_path = ffmpeg_video_screenshot(video_path, thumb_save_path)
-        return scaled_image_path
+        return f"/media{str.split(scaled_image_path)[1]}"
 
+    # thumbnail路径计算
+    # file_path 返回相对路径
     def path_cac(self,file):
-        file_path = os.path.abspath("media/" + str(file))
+        file_path = "media/" + str(file)
         thumb_save_path = os.path.join(BASE_DIR, 'media/image/crop', '{}_thumbnail.jpg'.format(self.short_code))
         return file_path, thumb_save_path

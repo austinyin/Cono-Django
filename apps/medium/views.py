@@ -158,25 +158,30 @@ def transfer_reset_view(request):
     """
     清空 tranferObj,删除关联对象,并返回执行结果。
     """
-    if request.method == 'POST':
-        try:
-            transfer_obj = TweetFileTransfer.objects.get(short_code=request.COOKIES['shortCode'])
-            if transfer_obj.type == UploadMediaType['image']:
-                for tweet_image_obj in transfer_obj.images.all():
-                    transfer_obj.images.remove(tweet_image_obj)
-                    tweet_image_obj.delete()
-            if transfer_obj.type == UploadMediaType['video']:
-                transfer_obj.video.delete()
+    if request.method != 'POST':
+        return
 
-            return JsonResponse({
-                'transferReset': True,
-                'transferObj': TweetFileTransferSerializer(transfer_obj).data
-            })
-        except Exception as e:
-            print(e)
-            return HttpResponseForbidden({
-                'transferReset': False,
-            })
+    try:
+        print("in"*10)
+        transfer_obj = TweetFileTransfer.objects.get(short_code=request.COOKIES['shortCode'])
+        if transfer_obj.type == UploadMediaType['image']:
+            for tweet_image_obj in transfer_obj.images.all():
+                transfer_obj.images.remove(tweet_image_obj)
+                tweet_image_obj.delete()
+        if transfer_obj.type == UploadMediaType['video']:
+            transfer_obj.video.delete()
+
+        return JsonResponse({
+            'transferReset': True,
+            'transferObj': TweetFileTransferSerializer(transfer_obj).data
+        })
+    except Exception as e:
+        print(e)
+        return JsonResponse({
+            'transferReset': False,
+            'msg': '没有登陆'
+        })
+
 
 
 class TweetImageViewSet(viewsets.ModelViewSet):

@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
-from django.http import JsonResponse, HttpResponseForbidden,HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -105,12 +105,12 @@ def change_password_view(request):
         try:
             user = request.user
             data = json.loads(request.body)
-            [old_password,new_password,new_password_reapeat] = [
+            [old_password, new_password, new_password_reapeat] = [
                 data['oldPassword']['value'],
                 data['newPassword']['value'],
                 data['newPasswordRepeat']['value']
             ]
-            if user.is_active and user.check_password(old_password) and new_password==new_password_reapeat:
+            if user.is_active and user.check_password(old_password) and new_password == new_password_reapeat:
                 user.set_password(user.check_password(data['newPassword']))
                 return JsonResponse(
                     {'changePassword': True, 'user': SelfSerializer(user, context={'request': request}).data})

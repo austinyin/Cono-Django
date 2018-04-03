@@ -19,7 +19,8 @@ class TweetViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['get'])
     def thumbnail(self, request, pk=None):
-        thumbnail_image = self.get_object().images.first().image
+        thumbnail_image = self.get_object().image_thumbnail.image
+        print('thumbnail_image',thumbnail_image)
         return HttpResponse(thumbnail_image, content_type="image/png")
 
 

@@ -27,7 +27,7 @@ registAll()
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('manage/admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/user/', include('apps.user.urls')),
     path('api/account/', include('apps.account.urls')),
