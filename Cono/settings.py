@@ -173,20 +173,18 @@ CORS_ALLOW_HEADERS = (
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = "/media/"
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '../../static/'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
-user_name = os.environ.get("USERNAME")
 
 if os.environ.get("PROJECT_ENV") == 'production':
     MEDIA_ROOT = '/var/www/Cono/media'
     STATIC_ROOT = '/var/www/Cono/static'
 else:
-    MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 
 
