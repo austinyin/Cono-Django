@@ -106,6 +106,7 @@ def pub_image_remove_view(request):
 @csrf_exempt
 def pub_commit_view(request):
     if request.method == 'POST':
+        print("in"*10)
         post_data = json.loads(request.body)
         short_code = request.COOKIES['shortCode']
         transfer_obj = TweetFileTransfer.objects.get(short_code=short_code)

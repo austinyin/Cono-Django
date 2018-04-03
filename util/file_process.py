@@ -4,6 +4,9 @@ import subprocess
 from PIL import Image
 
 from Cono.settings import BASE_DIR
+from util.log import logger
+
+
 
 
 def ffmpeg_video_screenshot(video_path, save_path):
@@ -19,7 +22,9 @@ def image_scale(size, file_path, save_path,afterRemove=False):
     width = size[0]
     height = size[1]
     infile = file_path
-
+    logger.info('save_path'+save_path)
+    logger.info("a")
+    logger.info('infile'+infile)
     im = Image.open(infile)
     scale = width / height
     scale_width, scale_height, fi_height, fiwidth = 1, 1, 1, 1
@@ -35,7 +40,10 @@ def image_scale(size, file_path, save_path,afterRemove=False):
     region = im.crop(box)
 
     region.thumbnail((width, height), Image.ANTIALIAS)
+    save_path = os.path.abspath(save_path)
     region.save(save_path)
+    logger.info("saved")
+    
     # 是否需要删除
     if afterRemove:
         os.remove(infile)

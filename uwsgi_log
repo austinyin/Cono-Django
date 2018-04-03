@@ -1,0 +1,317 @@
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Apr  3 07:56:15 2018] ***
+compiled with version: 7.2.0 on 01 April 2018 08:52:45
+os: Linux-4.13.0-25-generic #29-Ubuntu SMP Mon Jan 8 21:14:41 UTC 2018
+nodename: vultr.guest
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/projects/cono/sever
+detected binary path: /root/.envs/django/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/projects/cono/sever
+your processes number limit is 3731
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8001 fd 3
+Python version: 3.6.3 (default, Oct  3 2017, 21:45:48)  [GCC 7.2.0]
+Python main interpreter initialized at 0x55ac94586790
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 702080 bytes (685 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+added /root/.envs/django/lib/python3.6/site-packages/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55ac94586790 pid: 7957 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7957)
+spawned uWSGI worker 1 (pid: 7959, cores: 2)
+spawned uWSGI worker 2 (pid: 7960, cores: 2)
+spawned uWSGI worker 3 (pid: 7961, cores: 2)
+spawned uWSGI worker 4 (pid: 7962, cores: 2)
+Python auto-reloader enabled
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Apr  3 07:56:40 2018] ***
+compiled with version: 7.2.0 on 01 April 2018 08:52:45
+os: Linux-4.13.0-25-generic #29-Ubuntu SMP Mon Jan 8 21:14:41 UTC 2018
+nodename: vultr.guest
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/projects/cono/sever
+detected binary path: /root/.envs/django/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/projects/cono/sever
+your processes number limit is 3731
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8001 fd 3
+Python version: 3.6.3 (default, Oct  3 2017, 21:45:48)  [GCC 7.2.0]
+Python main interpreter initialized at 0x55ec4b6ba790
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 702080 bytes (685 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+added /root/.envs/django/lib/python3.6/site-packages/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55ec4b6ba790 pid: 7971 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7971)
+spawned uWSGI worker 1 (pid: 7973, cores: 2)
+spawned uWSGI worker 2 (pid: 7974, cores: 2)
+spawned uWSGI worker 3 (pid: 7975, cores: 2)
+spawned uWSGI worker 4 (pid: 7976, cores: 2)
+Python auto-reloader enabled
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Apr  3 07:58:26 2018] ***
+compiled with version: 7.2.0 on 01 April 2018 08:52:45
+os: Linux-4.13.0-25-generic #29-Ubuntu SMP Mon Jan 8 21:14:41 UTC 2018
+nodename: vultr.guest
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/projects/cono/sever
+detected binary path: /root/.envs/django/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/projects/cono/sever
+your processes number limit is 3731
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8001 fd 3
+Python version: 3.6.3 (default, Oct  3 2017, 21:45:48)  [GCC 7.2.0]
+Python main interpreter initialized at 0x55e82199c730
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 702080 bytes (685 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+added /root/.envs/django/lib/python3.6/site-packages/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55e82199c730 pid: 8023 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 8023)
+spawned uWSGI worker 1 (pid: 8025, cores: 2)
+spawned uWSGI worker 2 (pid: 8026, cores: 2)
+spawned uWSGI worker 3 (pid: 8027, cores: 2)
+spawned uWSGI worker 4 (pid: 8028, cores: 2)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Apr  3 07:59:16 2018] ***
+compiled with version: 7.2.0 on 01 April 2018 08:52:45
+os: Linux-4.13.0-25-generic #29-Ubuntu SMP Mon Jan 8 21:14:41 UTC 2018
+nodename: vultr.guest
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/projects/cono/sever
+detected binary path: /root/.envs/django/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/projects/cono/sever
+your processes number limit is 3731
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8001 fd 3
+Python version: 3.6.3 (default, Oct  3 2017, 21:45:48)  [GCC 7.2.0]
+Python main interpreter initialized at 0x557bff2b5730
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 702080 bytes (685 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+added /root/.envs/django/lib/python3.6/site-packages/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x557bff2b5730 pid: 8036 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 8036)
+spawned uWSGI worker 1 (pid: 8038, cores: 2)
+spawned uWSGI worker 2 (pid: 8039, cores: 2)
+spawned uWSGI worker 3 (pid: 8040, cores: 2)
+spawned uWSGI worker 4 (pid: 8041, cores: 2)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Apr  3 08:12:47 2018] ***
+compiled with version: 7.2.0 on 01 April 2018 08:52:45
+os: Linux-4.13.0-25-generic #29-Ubuntu SMP Mon Jan 8 21:14:41 UTC 2018
+nodename: vultr.guest
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/projects/cono/sever
+detected binary path: /root/.envs/django/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/projects/cono/sever
+your processes number limit is 3731
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:8001 fd 3
+Python version: 3.6.3 (default, Oct  3 2017, 21:45:48)  [GCC 7.2.0]
+Python main interpreter initialized at 0x55e675ce27a0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 702080 bytes (685 KB) for 8 cores
+*** Operational MODE: preforking+threaded ***
+added /root/.envs/django/lib/python3.6/site-packages/ to pythonpath.
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55e675ce27a0 pid: 8623 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 8623)
+spawned uWSGI worker 1 (pid: 8625, cores: 2)
+spawned uWSGI worker 2 (pid: 8626, cores: 2)
+spawned uWSGI worker 3 (pid: 8627, cores: 2)
+spawned uWSGI worker 4 (pid: 8628, cores: 2)
+Python auto-reloader enabled
+*** Starting uWSGI 2.0.15 (64bit) on [Tue Apr  3 08:13:17 2018] ***
+compiled with version: 7.2.0 on 01 April 2018 08:52:45
+os: Linux-4.13.0-25-generic #29-Ubuntu SMP Mon Jan 8 21:14:41 UTC 2018
+nodename: vultr.guest
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 1
+current working directory: /home/projects/cono/sever
+detected binary path: /root/.envs/django/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/projects/cono/sever
+your processes number limit is 3731
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (127.0.0.1:8001).
+bind(): Address already in use [core/socket.c line 769]
+inininininininininin
+[pid: 8626|app: 0|req: 2/1] 163.125.114.19 () {50 vars in 963 bytes} [Tue Apr  3 16:13:17 2018] POST /api/upload/transfer/reset => generated 111 bytes in 704 msecs (HTTP/1.1 200) 6 headers in 210 bytes (1 switches on core 0)
+'request'
+'request'
+[pid: 8626|app: 0|req: 2/2] 163.125.114.19 () {46 vars in 891 bytes} [Tue Apr  3 16:13:17 2018] GET /api/user/snapshotList => generated 475 bytes in 650 msecs (HTTP/1.1 200) 5 headers in 150 bytes (1 switches on core 1)
+/root/.envs/django/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1423: RuntimeWarning: DateTimeField Comment.update_time received a naive datetime (2018-04-03 16:13:18.289167) while time zone support is active.
+  RuntimeWarning)
+/root/.envs/django/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1423: RuntimeWarning: DateTimeField CommentSign.update_time received a naive datetime (2018-04-03 16:13:18.336502) while time zone support is active.
+  RuntimeWarning)
+/root/.envs/django/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1423: RuntimeWarning: DateTimeField TweetSign.update_time received a naive datetime (2018-04-03 16:13:18.341367) while time zone support is active.
+  RuntimeWarning)
+/root/.envs/django/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1423: RuntimeWarning: DateTimeField TweetRelations.update_time received a naive datetime (2018-04-03 16:13:18.346720) while time zone support is active.
+  RuntimeWarning)
+/root/.envs/django/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1423: RuntimeWarning: DateTimeField PersonRelations.update_time received a naive datetime (2018-04-03 16:13:18.348662) while time zone support is active.
+  RuntimeWarning)
+/root/.envs/django/lib/python3.6/site-packages/django/db/models/fields/__init__.py:1423: RuntimeWarning: DateTimeField TweetRelations.update_time received a naive datetime (2018-04-03 16:13:18.353144) while time zone support is active.
+  RuntimeWarning)
+[pid: 8627|app: 0|req: 1/3] 163.125.114.19 () {50 vars in 957 bytes} [Tue Apr  3 16:13:17 2018] POST /api/account/loginCheck => generated 386 bytes in 854 msecs (HTTP/1.1 200) 6 headers in 218 bytes (1 switches on core 0)
+[pid: 8625|app: 0|req: 1/4] 163.125.114.19 () {46 vars in 905 bytes} [Tue Apr  3 16:13:17 2018] GET /api/tweet?page=1&page_size=10 => generated 1967 bytes in 874 msecs (HTTP/1.1 200) 5 headers in 157 bytes (1 switches on core 0)
+[pid: 8626|app: 0|req: 3/5] 163.125.114.19 () {52 vars in 1114 bytes} [Tue Apr  3 16:13:25 2018] POST /api/upload/transfer => generated 373 bytes in 41 msecs (HTTP/1.1 200) 7 headers in 251 bytes (1 switches on core 0)
+inininininininininin
+Internal Server Error: /api/upload/commit
+Traceback (most recent call last):
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/cursors.py", line 247, in execute
+    res = self._query(query)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/cursors.py", line 374, in _do_query
+    db.query(q)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+_mysql_exceptions.IntegrityError: (1062, "Duplicate entry '10\n' for key 'short_code'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.envs/django/lib/python3.6/site-packages/django/core/handlers/exception.py", line 35, in inner
+    response = get_response(request)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/core/handlers/base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "./apps/medium/views.py", line 119, in pub_commit_view
+    tweet = Tweet.objects.create(**tweet_data)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/query.py", line 417, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/base.py", line 729, in save
+    force_update=force_update, update_fields=update_fields)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/base.py", line 759, in save_base
+    updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/base.py", line 842, in _save_table
+    result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/base.py", line 880, in _do_insert
+    using=using, raw=raw)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/manager.py", line 82, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/query.py", line 1125, in _insert
+    return query.get_compiler(using=using).execute_sql(return_id)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/models/sql/compiler.py", line 1280, in execute_sql
+    cursor.execute(sql, params)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/backends/utils.py", line 100, in execute
+    return super().execute(sql, params)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/backends/utils.py", line 68, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/backends/utils.py", line 85, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.envs/django/lib/python3.6/site-packages/django/db/backends/mysql/base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/cursors.py", line 247, in execute
+    res = self._query(query)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/cursors.py", line 411, in _query
+    rowcount = self._do_query(q)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/cursors.py", line 374, in _do_query
+    db.query(q)
+  File "/root/.envs/django/lib/python3.6/site-packages/MySQLdb/connections.py", line 277, in query
+    _mysql.connection.query(self, query)
+django.db.utils.IntegrityError: (1062, "Duplicate entry '10\n' for key 'short_code'")
+[pid: 8628|app: 0|req: 1/6] 163.125.114.19 () {52 vars in 1030 bytes} [Tue Apr  3 16:13:26 2018] POST /api/upload/commit => generated 209376 bytes in 346 msecs (HTTP/1.1 500) 6 headers in 233 bytes (1 switches on core 0)

@@ -14,6 +14,7 @@ from shared.constants.common import IMAGE_THUMBNAIL_TYPE, IMAGE_THUMBNAIL_SIZE
 from util.file_process import image_scale, ffmpeg_video_screenshot
 
 from django.conf import settings
+import logging
 class Tweet(models.Model):
     """
     推文
@@ -56,20 +57,23 @@ class Tweet(models.Model):
         img_path, thumb_save_path = self.path_cac(image_obj.image)
         scaled_image_path = image_scale(IMAGE_THUMBNAIL_SIZE, img_path,thumb_save_path)
         print()
-        return f"/media{scaled_image_path.split('media')[1]}"
+        return thumb_save_path
+        #return f"/media{scaled_image_path.split('media')[1]}"
 
     def video_capture_and_scale_handle(self, video_obj):
         video_path, thumb_save_path = self.path_cac(video_obj.video)
         scaled_image_path = ffmpeg_video_screenshot(video_path, thumb_save_path)
-        return f"/media{scaled_image_path.split('media')[1]}"
+        return thumb_save_path
+        #return f"/media{scaled_image_path.split('media')[1]}"
 
     # thumbnail路径计算
     # file_path 返回相对路径
     def path_cac(self,file):
-        file_path = f"media/{str(file)}"
-        if os.environ.get("PROJECT_ENV") != 'production':
-            file_path = os.path.join(settings['MEDIA_ROOT'],file_path)
-            print('file_path',file_path)
-            print('file_path',file_path)
+        file_path = os.path.join(settings.MEDIA_ROOT,str(file))
         thumb_save_path = os.path.join(BASE_DIR, 'media/image/crop', '{}_thumbnail.jpg'.format(self.short_code))
+
+        if os.environ.get("PROJECT_ENV") == 'production':
+            file_path = os.path.join(settings.MEDIA_ROOT,str(file))
+            thumb_save_path = os.path.join(settings.MEDIA_ROOT, 'image/crop', '{}_thumbnail.jpg'.format(self.short_code))
+        logging.info('file_path, thumb_save_path hahahah',file_path,"gagagagag", thumb_save_path)
         return file_path, thumb_save_path
