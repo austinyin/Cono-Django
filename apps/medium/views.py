@@ -116,40 +116,71 @@ def pub_commit_view(request):
             'text': post_data['text'],
         }
         tweet = Tweet.objects.create(**tweet_data)
-        try:
-            if transfer_obj.type == UploadMediaType['image']:
-                for image in transfer_obj.images.all():
-                    tweet.images.add(image)
-                tweet.type = UploadMediaType['image']
 
-            if transfer_obj.type == UploadMediaType['video']:
-                tweet.video = transfer_obj.video
-                tweet.type = UploadMediaType['video']
+        if transfer_obj.type == UploadMediaType['image']:
+            for image in transfer_obj.images.all():
+                tweet.images.add(image)
+            tweet.type = UploadMediaType['image']
 
-            # 这里的save在model中进行了加工，会自动保存略缩图
-            tweet.save_with_thumbnail()
+        if transfer_obj.type == UploadMediaType['video']:
+            tweet.video = transfer_obj.video
+            tweet.type = UploadMediaType['video']
 
-            # 增加tweetSign 对象
-            signs = post_data['signTargetList']
-            for target_username in signs:
-                target = User.objects.get(username=target_username)
-                if target is not None and target.is_active:
-                    TweetSign.objects.create(
-                        act_one=request.user,
-                        target_one=target,
-                        text=post_data['text'],
-                        tweet=tweet
-                    )
+        # 这里的save在model中进行了加工，会自动保存略缩图
+        tweet.save_with_thumbnail()
 
-            response = JsonResponse({'pubCommit': True, 'short_code': short_code})
-            # 清除shortCode Cookie, 删除中转对象。
-            response.delete_cookie('shortCode')
-            transfer_obj.delete()
-            return response
-        except Exception as e:
-            print(e)
-            tweet.delete()
-            return HttpResponseForbidden({'pubCommit': False})
+        # 增加tweetSign 对象
+        signs = post_data['signTargetList']
+        for target_username in signs:
+            target = User.objects.get(username=target_username)
+            if target is not None and target.is_active:
+                TweetSign.objects.create(
+                    act_one=request.user,
+                    target_one=target,
+                    text=post_data['text'],
+                    tweet=tweet
+                )
+
+        response = JsonResponse({'pubCommit': True, 'short_code': short_code})
+        # 清除shortCode Cookie, 删除中转对象。
+        response.delete_cookie('shortCode')
+        transfer_obj.delete()
+        return response
+
+        # try:
+        #     if transfer_obj.type == UploadMediaType['image']:
+        #         for image in transfer_obj.images.all():
+        #             tweet.images.add(image)
+        #         tweet.type = UploadMediaType['image']
+        #
+        #     if transfer_obj.type == UploadMediaType['video']:
+        #         tweet.video = transfer_obj.video
+        #         tweet.type = UploadMediaType['video']
+        #
+        #     # 这里的save在model中进行了加工，会自动保存略缩图
+        #     tweet.save_with_thumbnail()
+        #
+        #     # 增加tweetSign 对象
+        #     signs = post_data['signTargetList']
+        #     for target_username in signs:
+        #         target = User.objects.get(username=target_username)
+        #         if target is not None and target.is_active:
+        #             TweetSign.objects.create(
+        #                 act_one=request.user,
+        #                 target_one=target,
+        #                 text=post_data['text'],
+        #                 tweet=tweet
+        #             )
+        #
+        #     response = JsonResponse({'pubCommit': True, 'short_code': short_code})
+        #     # 清除shortCode Cookie, 删除中转对象。
+        #     response.delete_cookie('shortCode')
+        #     transfer_obj.delete()
+        #     return response
+        # except Exception as e:
+        #     print(e)
+        #     tweet.delete()
+        #     return HttpResponseForbidden({'pubCommit': False})
 
 
 @csrf_exempt
