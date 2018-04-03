@@ -55,12 +55,13 @@ class Tweet(models.Model):
     def image_obj_scale_handle(self, image_obj):
         img_path, thumb_save_path = self.path_cac(image_obj.image)
         scaled_image_path = image_scale(IMAGE_THUMBNAIL_SIZE, img_path,thumb_save_path)
-        return f"/media{str.split(scaled_image_path)[1]}"
+        print()
+        return f"/media{scaled_image_path.split('media')[1]}"
 
     def video_capture_and_scale_handle(self, video_obj):
         video_path, thumb_save_path = self.path_cac(video_obj.video)
         scaled_image_path = ffmpeg_video_screenshot(video_path, thumb_save_path)
-        return f"/media{str.split(scaled_image_path)[1]}"
+        return f"/media{scaled_image_path.split('media')[1]}"
 
     # thumbnail路径计算
     # file_path 返回相对路径

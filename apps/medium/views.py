@@ -4,6 +4,7 @@ import os
 from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
+from pymysql import IntegrityError
 from rest_framework import viewsets
 
 from apps.medium.models import TweetImage, TweetFileTransfer, TweetVideo
@@ -99,7 +100,6 @@ def pub_image_remove_view(request):
             })
 
 
-import subprocess
 
 
 
@@ -146,7 +146,6 @@ def pub_commit_view(request):
             response.delete_cookie('shortCode')
             transfer_obj.delete()
             return response
-
         except Exception as e:
             print(e)
             tweet.delete()
@@ -177,7 +176,7 @@ def transfer_reset_view(request):
         })
     except Exception as e:
         print(e)
-        return JsonResponse({
+        return HttpResponseForbidden({
             'transferReset': False,
             'msg': '没有登陆'
         })
