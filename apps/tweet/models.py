@@ -13,7 +13,7 @@ from shared.choices.tweetModel import TWEET_TYPE_CHOICES
 from shared.constants.common import IMAGE_THUMBNAIL_TYPE, IMAGE_THUMBNAIL_SIZE
 from util.file_process import image_scale, ffmpeg_video_screenshot
 
-
+from django.conf import settings
 class Tweet(models.Model):
     """
     推文
@@ -66,6 +66,10 @@ class Tweet(models.Model):
     # thumbnail路径计算
     # file_path 返回相对路径
     def path_cac(self,file):
-        file_path = "media/" + str(file)
+        file_path = f"media/{str(file)}"
+        if os.environ.get("PROJECT_ENV") != 'production':
+            file_path = os.path.join(settings['MEDIA_ROOT'],file_path)
+            print('file_path',file_path)
+            print('file_path',file_path)
         thumb_save_path = os.path.join(BASE_DIR, 'media/image/crop', '{}_thumbnail.jpg'.format(self.short_code))
         return file_path, thumb_save_path
