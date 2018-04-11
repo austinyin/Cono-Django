@@ -10,8 +10,9 @@ from util.log import logger
 
 
 def ffmpeg_video_screenshot(video_path, save_path):
-    ffmpeg_path = os.path.join(BASE_DIR, 'extra_apps/ffmpeg/ffmpeg.exe')
-    img_crop_cmd = '{} -ss 00:00:02 -i {} -frames:v 1 -s 300x300 {}'.format(ffmpeg_path, video_path, save_path)
+    # ffmpeg_path = os.path.join(BASE_DIR, 'extra_apps/ffmpeg/ffmpeg.exe')
+    # img_crop_cmd = '{} -ss 00:00:02 -i {} -frames:v 1 -s 300x300 {}'.format(ffmpeg_path, video_path, save_path)
+    img_crop_cmd = 'ffmpeg -ss 00:00:02 -i {} -frames:v 1 -s 300x300 {}'.format(video_path, save_path)
     img_crop_pipe = subprocess.Popen(img_crop_cmd, shell=True)
     img_crop_pipe.wait()
     return save_path

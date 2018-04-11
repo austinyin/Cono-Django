@@ -15,6 +15,8 @@ from util.file_process import image_scale, ffmpeg_video_screenshot
 
 from django.conf import settings
 import logging
+
+
 class Tweet(models.Model):
     """
     推文
@@ -43,6 +45,7 @@ class Tweet(models.Model):
         super(Tweet, self).save()  # 先调用父类的save,否则后面不能处理 self.images or self.video
         first_image = self.images.first()
         video_obj = self.video
+        # 文件相对于media root 的路径
         thumbnail_path = None
         if first_image:
             thumbnail_path = self.image_obj_scale_handle(first_image)
@@ -55,25 +58,23 @@ class Tweet(models.Model):
 
     def image_obj_scale_handle(self, image_obj):
         img_path, thumb_save_path = self.path_cac(image_obj.image)
-        scaled_image_path = image_scale(IMAGE_THUMBNAIL_SIZE, img_path,thumb_save_path)
-        print()
-        return thumb_save_path
-        #return f"/media{scaled_image_path.split('media')[1]}"
+        image_scale(IMAGE_THUMBNAIL_SIZE, img_path, thumb_save_path)
+        return thumb_save_path.split('media')[1]
 
     def video_capture_and_scale_handle(self, video_obj):
         video_path, thumb_save_path = self.path_cac(video_obj.video)
-        scaled_image_path = ffmpeg_video_screenshot(video_path, thumb_save_path)
-        return thumb_save_path
-        #return f"/media{scaled_image_path.split('media')[1]}"
+        ffmpeg_video_screenshot(video_path, thumb_save_path)
+        return thumb_save_path.split('media')[1]
 
     # thumbnail路径计算
     # file_path 返回相对路径
-    def path_cac(self,file):
-        file_path = os.path.join(settings.MEDIA_ROOT,str(file))
+    def path_cac(self, file):
+        file_path = os.path.join(settings.MEDIA_ROOT, str(file))
         thumb_save_path = os.path.join(BASE_DIR, 'media/image/crop', '{}_thumbnail.jpg'.format(self.short_code))
 
         if os.environ.get("PROJECT_ENV") == 'production':
-            file_path = os.path.join(settings.MEDIA_ROOT,str(file))
-            thumb_save_path = os.path.join(settings.MEDIA_ROOT, 'image/crop', '{}_thumbnail.jpg'.format(self.short_code))
-        logging.info('file_path, thumb_save_path hahahah',file_path,"gagagagag", thumb_save_path)
+            file_path = os.path.join(settings.MEDIA_ROOT, str(file))
+            thumb_save_path = os.path.join(settings.MEDIA_ROOT, 'image/crop',
+                                           '{}_thumbnail.jpg'.format(self.short_code))
+        logging.info('file_path, thumb_save_path hahahah', file_path, "gagagagag", thumb_save_path)
         return file_path, thumb_save_path
