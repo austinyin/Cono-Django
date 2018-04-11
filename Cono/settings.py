@@ -184,7 +184,7 @@ if os.environ.get("PROJECT_ENV") == 'production':
     MEDIA_ROOT = '/var/www/Cono/media'
     STATIC_ROOT = '/var/www/Cono/static'
     ffmpeg_path = "ffmpeg"
-    ALLOWED_HOSTS = ['*.yinweiqi.com.']
+    ALLOWED_HOSTS = ['*.yinweiqi.com.*']
     DEBUG = False
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
