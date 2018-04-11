@@ -19,12 +19,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b3flg7@r-=l&ipvvmu4_j*e0p@7i1&znt)jj=s523*8vdoc)9t'
+SECRET_KEY = 'b3flg7@r-=l&ipvvmu4_j*e0p@7i1&znt)jj=s523*8vdoc)9t'  # 上线项目 SECRET_KEY 应该通过环境变量配置
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -180,11 +178,22 @@ STATICFILES_DIRS = (
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 
+
+
 if os.environ.get("PROJECT_ENV") == 'production':
     MEDIA_ROOT = '/var/www/Cono/media'
     STATIC_ROOT = '/var/www/Cono/static'
+    ffmpeg_path = "ffmpeg"
+    ALLOWED_HOSTS = ['.yinweiqi.com.']
+    DEBUG = False
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    ffmpeg_path = os.path.join(BASE_DIR, 'extra_apps/ffmpeg/ffmpeg.exe')
+    DEBUG = True
+    ALLOWED_HOSTS = ['*']
+
+
+
 
 
 
