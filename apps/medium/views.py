@@ -208,9 +208,9 @@ def transfer_reset_view(request):
         })
     except Exception as e:
         print(e)
-        return HttpResponseForbidden({
+        return JsonResponse({
             'transferReset': False,
-            'msg': '没有登陆'
+            'msg': 'tranferObj无需清空'
         })
 
 
